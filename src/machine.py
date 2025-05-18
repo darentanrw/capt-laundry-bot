@@ -23,13 +23,13 @@ class Machine(ABC):
         if utils.is_available(end_time):
             reply = f"AVAILABLE \U00002705"
             if curr_user:
-                reply += f', last used by @{'' if mention_user else ' '}{curr_user} ({end_time.astimezone(SGT_TIMEZONE).strftime("%d/%m/%Y %I:%M%p")})'
+                reply += f', last used by @{'' if mention_user else ' '}{curr_user} ({end_time.astimezone(SGT_TIMEZONE).strftime("%m/%Y %I:%M%p")})'
             return reply
         else:
             time_delta = end_time - datetime.datetime.now()
             time_in_min = time_delta.seconds // 60
             time_in_sec = time_delta.seconds % 60
-            return f"UNAVAILABLE \U0000274C for {time_in_min}mins and {time_in_sec}s by @{curr_user}"
+            return f"UNAVAILABLE \U0000274C for {time_in_min}m {time_in_sec}s until {end_time.astimezone(SGT_TIMEZONE).strftime('%I:%M%p')} by @{curr_user}"
 
     def get_curr_user(self):
         curr_user, end_time = storage.get_laundry_timer(self.house_id, self.name)
